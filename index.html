@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CREATIX - #DariDataJadiDana</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts (Plus Jakarta Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tosca: '#0D9488',
+                        'tosca-dark': '#0F766E',
+                        cyan: '#06B6D4',
+                        'cyan-light': '#ECFEFF',
+                    },
+                    fontFamily: {
+                        jakarta: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #0D9488 0%, #06B6D4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .bg-grid {
+            background-image: radial-gradient(#0d948834 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        /* Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-anim {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800 overflow-x-hidden">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 glass-card shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center gap-3">
+                <img src="https://z-cdn-media.chatglm.cn/files/c95ce19e-845f-4154-8147-c9c00bfb5f5a.png?auth_key=1878512587-50c616d37c114f95baa9751c8318d190-0-9f50f1b6877ddded8300f492d8386ef3" alt="CREATIX Logo" class="h-10 w-10 object-contain">
+                <span class="text-2xl font-extrabold tracking-tight gradient-text">CREATIX</span>
+            </a>
+            
+            <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-600">
+                <a href="#fitur" class="hover:text-tosca transition">Fitur</a>
+                <a href="#peran" class="hover:text-tosca transition">Peran</a>
+                <a href="#pentahelix" class="hover:text-tosca transition">Pentahelix</a>
+                <button onclick="openModal('login')" class="hover:text-tosca transition">Masuk</button>
+                <button onclick="openModal('register')" class="bg-tosca text-white px-5 py-2 rounded-full hover:bg-tosca-dark transition shadow-lg shadow-tosca/30">Daftar</button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-tosca" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t px-6 py-4 space-y-4">
+            <a href="#fitur" class="block text-gray-700 font-semibold">Fitur</a>
+            <a href="#peran" class="block text-gray-700 font-semibold">Peran</a>
+            <a href="#pentahelix" class="block text-gray-700 font-semibold">Pentahelix</a>
+            <button onclick="openModal('login')" class="block w-full text-left text-gray-700 font-semibold">Masuk</button>
+            <button onclick="openModal('register')" class="block w-full bg-tosca text-white px-5 py-2 rounded-full text-center">Daftar</button>
+        </div>
+    </nav>
+
+    <!-- Login / Register Modal -->
+    <div id="authModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 relative overflow-hidden">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-xl"><i class="fas fa-times"></i></button>
+            
+            <div class="p-8">
+                <div class="flex mb-6 border-b">
+                    <button id="tabLogin" onclick="switchTab('login')" class="flex-1 pb-3 border-b-2 border-tosca text-tosca font-bold">Masuk</button>
+                    <button id="tabRegister" onclick="switchTab('register')" class="flex-1 pb-3 border-b-2 border-transparent text-gray-400 font-bold">Daftar</button>
+                </div>
+
+                <!-- Login Form -->
+                <div id="formLogin">
+                    <h2 class="text-2xl font-bold mb-2 text-gray-800">Selamat Datang!</h2>
+                    <p class="text-gray-500 mb-6 text-sm">Masuk ke ekosistem CREATIX</p>
+                    <div class="space-y-4">
+                        <div class="relative">
+                            <i class="fas fa-envelope absolute top-3.5 left-4 text-gray-400"></i>
+                            <input type="email" placeholder="Alamat Email" class="w-full pl-12 pr-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-tosca/50">
+                        </div>
+                        <div class="relative">
+                            <i class="fas fa-lock absolute top-3.5 left-4 text-gray-400"></i>
+                            <input type="password" placeholder="Kata Sandi" class="w-full pl-12 pr-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-tosca/50">
+                        </div>
+                        <button class="w-full bg-tosca text-white py-3 rounded-xl font-bold hover:bg-tosca-dark transition">Masuk</button>
+                    </div>
+                </div>
+
+                <!-- Register Form -->
+                <div id="formRegister" class="hidden">
+                    <h2 class="text-2xl font-bold mb-2 text-gray-800">Buat Akun</h2>
+                    <p class="text-gray-500 mb-6 text-sm">Mulai perjalanan #DariDataJadiDana</p>
+                    <div class="space-y-4">
+                        <div class="relative">
+                            <i class="fas fa-user absolute top-3.5 left-4 text-gray-400"></i>
+                            <input type="text" placeholder="Nama Lengkap" class="w-full pl-12 pr-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-tosca/50">
+                        </div>
+                        <div class="relative">
+                            <i class="fas fa-envelope absolute top-3.5 left-4 text-gray-400"></i>
+                            <input type="email" placeholder="Alamat Email" class="w-full pl-12 pr-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-tosca/50">
+                        </div>
+                        <div class="relative">
+                            <i class="fas fa-phone absolute top-3.5 left-4 text-gray-400"></i>
+                            <input type="tel" placeholder="Nomor Telepon" class="w-full pl-12 pr-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-tosca/50">
+                        </div>
+                        <div class="relative">
+                            <i class="fas fa-lock absolute top-3.5 left-4 text-gray-400"></i>
+                            <input type="password" placeholder="Buat Kata Sandi" class="w-full pl-12 pr-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-tosca/50">
+                        </div>
+                        <button class="w-full bg-cyan text-white py-3 rounded-xl font-bold hover:bg-blue-500 transition">Daftar Sekarang</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden bg-grid">
+        <div class="absolute top-20 left-10 w-72 h-72 bg-tosca/10 rounded-full filter blur-3xl"></div>
+        <div class="absolute bottom-10 right-10 w-96 h-96 bg-cyan/10 rounded-full filter blur-3xl"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 flex flex-col items-center text-center relative z-10">
+            <div class="inline-block px-4 py-1.5 bg-tosca/10 text-tosca font-semibold text-sm rounded-full mb-6 tracking-wider">
+                TRANSPARENCY-TO-TRUST PIPELINE
+            </div>
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-6 text-gray-900">
+                Transformasi Data<br>
+                <span class="gradient-text">#DariDataJadiDana</span>
+            </h1>
+            <p class="max-w-2xl text-lg text-gray-600 mb-10 leading-relaxed">
+                CREATIX adalah jembatan inovatif antara transparansi keuangan UMKM dan modal investor muda. Ubah pencatatan keuangan terstruktur menjadi reputasi digital yang kredibel untuk akses permodalan organik.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <a href="#peran" class="px-8 py-4 bg-tosca text-white font-bold rounded-xl shadow-lg shadow-tosca/30 hover:bg-tosca-dark transition flex items-center gap-2">
+                    <i class="fas fa-store"></i> Mulai Catat Transaksi
+                </a>
+                <a href="#peran" class="px-8 py-4 bg-cyan text-white font-bold rounded-xl shadow-lg shadow-cyan/30 hover:bg-blue-500 transition flex items-center gap-2">
+                    <i class="fas fa-chart-line"></i> Mulai Investasi Mikro
+                </a>
+            </div>
+
+            <!-- Hero Image / Logo Representation -->
+            <div class="mt-16 relative float-anim">
+                <div class="bg-gradient-to-r from-tosca to-cyan p-1 rounded-2xl shadow-2xl">
+                    <div class="bg-white rounded-xl p-8 flex flex-col items-center">
+                        <img src="https://z-cdn-media.chatglm.cn/files/c95ce19e-845f-4154-8147-c9c00bfb5f5a.png?auth_key=1878512587-50c616d37c114f95baa9751c8318d190-0-9f50f1b6877ddded8300f492d8386ef3" alt="CREATIX App Interface" class="h-40 mb-4 object-contain opacity-90">
+                        <div class="flex gap-4 w-full max-w-sm">
+                            <div class="flex-1 bg-gray-50 p-3 rounded-lg border border-gray-100 text-left">
+                                <p class="text-xs text-gray-500">Saldo UMKM</p>
+                                <p class="text-tosca font-bold">Rp 12.500.000</p>
+                            </div>
+                            <div class="flex-1 bg-gray-50 p-3 rounded-lg border border-gray-100 text-left">
+                                <p class="text-xs text-gray-500">Trust Level</p>
+                                <p class="text-cyan font-bold flex items-center gap-1"><i class="fas fa-shield-alt text-xs"></i> Gold</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Showcase -->
+    <section id="fitur" class="py-20 bg-cyan-light">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-extrabold mb-4 text-gray-900">Ekosistem Finansial Terintegrasi</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Delapan pilar fitur yang merevolusi tata kelola UMKM dan investasi mikro melalui teknologi AI dan Behavioral Design.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- AI AutoRecord -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 hover:shadow-xl hover:border-tosca/30 transition group cursor-pointer">
+                    <div class="w-14 h-14 bg-tosca/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-tosca group-hover:text-white text-tosca transition">
+                        <i class="fas fa-robot text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2 text-gray-900">AI AutoRecord</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Pencatatan transaksi otomatis yang langsung dikonversi menjadi laporan keuangan oleh AI tanpa keahlian akuntansi.</p>
+                </div>
+
+                <!-- AnomalyGuard -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 hover:shadow-xl hover:border-tosca/30 transition group cursor-pointer">
+                    <div class="w-14 h-14 bg-red-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-red-500 group-hover:text-white text-red-500 transition">
+                        <i class="fas fa-shield-virus text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2 text-gray-900">AnomalyGuard</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Deteksi penipuan real-time dan peringatan dini untuk mencegah krisis arus kas sebelum memburuk.</p>
+                </div>
+
+                <!-- TrustScale -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 hover:shadow-xl hover:border-tosca/30 transition group cursor-pointer">
+                    <div class="w-14 h-14 bg-yellow-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-yellow-500 group-hover:text-white text-yellow-500 transition">
+                        <i class="fas fa-medal text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2 text-gray-900">TrustScale</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Indikator reputasi digital (Starter hingga Platinum) yang meningkatkan visibilitas di mata investor.</p>
+                </div>
+
+                <!-- MatchInvest -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 hover:shadow-xl hover:border-tosca/30 transition group cursor-pointer">
+                    <div class="w-14 h-14 bg-cyan/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-cyan group-hover:text-white text-cyan transition">
+                        <i class="fas fa-handshake text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2 text-gray-900">MatchInvest</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Pencocokan investasi mikro berbasis AI yang memasangkan profil risiko investor dengan karakteristik UMKM.</p>
+                </div>
+
+                <!-- MutualReturn -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 hover:shadow-xl hover:border-tosca/30 transition group cursor-pointer">
+                    <div class="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-green-500 group-hover:text-white text-green-500 transition">
+                        <i class="fas fa-exchange-alt text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2 text-gray-900">MutualReturn</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Model imbal hasil Revenue Sharing dan Voucher Circular untuk siklus ekonomi lokal yang mutualistik.</p>
+                </div>
+
+                <!-- HabitPlus -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 hover:shadow-xl hover:border-tosca/30 transition group cursor-pointer">
+                    <div class="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-purple-500 group-hover:text-white text-purple-500 transition">
+                        <i class="fas fa-trophy text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2 text-gray-900">HabitPlus</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Gamifikasi disiplin keuangan. Kumpulkan poin, selesaikan tantangan, dan dapatkan penghargaan eksklusif.</p>
+                </div>
+
+                <!-- SecurityShield -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 hover:shadow-xl hover:border-tosca/30 transition group cursor-pointer">
+                    <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-blue-500 group-hover:text-white text-blue-500 transition">
+                        <i class="fas fa-lock text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2 text-gray-900">SecurityShield</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Keamanan berlapis dengan verifikasi resmi, rekening penampung terlindungi, hingga asuransi mikro.</p>
+                </div>
+
+                <!-- EduHub -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 hover:shadow-xl hover:border-tosca/30 transition group cursor-pointer">
+                    <div class="w-14 h-14 bg-orange-50 rounded-xl flex items-center justify-center mb-5 group-hover:bg-orange-500 group-hover:text-white text-orange-500 transition">
+                        <i class="fas fa-graduation-cap text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2 text-gray-900">EduHub</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Pusat literasi digital berformat micro-learning dan panduan praktis dari tim ahli untuk pertumbuhan usaha.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dual Path Section (UMKM vs Investors) -->
+    <section id="peran" class="py-24 bg-white relative overflow-hidden">
+        <div class="absolute -left-20 top-0 w-96 h-96 bg-tosca/5 rounded-full filter blur-3xl"></div>
+        <div class="absolute -right-20 bottom-0 w-96 h-96 bg-cyan/5 rounded-full filter blur-3xl"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-extrabold mb-4 text-gray-900">Satu Platform, Dua Arah Pertumbuhan</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Menghubungkan kebutuhan UMKM agar bankable dengan hasrat investor muda untuk berinvestasi berbasis data kredibel.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- UMKM Card -->
+                <div class="bg-gradient-to-br from-gray-50 to-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-2xl transition">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-16 h-16 bg-tosca rounded-2xl flex items-center justify-center shadow-lg shadow-tosca/30">
+                            <i class="fas fa-store text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900">Untuk UMKM</h3>
+                    </div>
+                    <p class="text-gray-600 mb-8">Transformasi usaha dari unbankable menjadi bankable melalui reputasi digital.</p>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-tosca mt-1"></i>
+                            <span class="text-gray-700">Pencatatan otomatis tanpa ribet via <strong>AI AutoRecord</strong></span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-tosca mt-1"></i>
+                            <span class="text-gray-700">Bangun reputasi keuangan dengan <strong>TrustScale</strong></span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-tosca mt-1"></i>
+                            <span class="text-gray-700">Akses permodalan organik tanpa pinjol berisiko</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-tosca mt-1"></i>
+                            <span class="text-gray-700">Imbal hasil fleksibel via Revenue Sharing</span>
+                        </li>
+                    </ul>
+                    <button onclick="openModal('register')" class="w-full bg-tosca text-white py-3 rounded-xl font-bold hover:bg-tosca-dark transition shadow-md">
+                        Mulai Catat Transaksi
+                    </button>
+                </div>
+
+                <!-- Investor Card -->
+                <div class="bg-gradient-to-br from-gray-50 to-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-2xl transition">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-16 h-16 bg-cyan rounded-2xl flex items-center justify-center shadow-lg shadow-cyan/30">
+                            <i class="fas fa-chart-pie text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900">Untuk Investor Muda</h3>
+                    </div>
+                    <p class="text-gray-600 mb-8">Investasi mikro cerdas dengan landasan data yang transparan dan terverifikasi.</p>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-cyan mt-1"></i>
+                            <span class="text-gray-700">Data keuangan UMKM tervalidasi AI yang <strong>kredibel</strong></span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-cyan mt-1"></i>
+                            <span class="text-gray-700">Pencocokan profil risiko cerdas via <strong>MatchInvest</strong></span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-cyan mt-1"></i>
+                            <span class="text-gray-700">Modal terjangkau mulai dari ribuan rupiah</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-cyan mt-1"></i>
+                            <span class="text-gray-700">Dapatkan Voucher Circular dari UMKM mitra</span>
+                        </li>
+                    </ul>
+                    <button onclick="openModal('register')" class="w-full bg-cyan text-white py-3 rounded-xl font-bold hover:bg-blue-500 transition shadow-md">
+                        Mulai Investasi Mikro
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pentahelix Collaboration -->
+    <section id="pentahelix" class="py-24 bg-gray-900 text-white relative">
+        <div class="absolute inset-0 bg-grid opacity-5"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-extrabold mb-4">Kolaborasi Pentahelix</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Keberhasilan CREATIX bergantung pada sinergi lima pilar pemangku kepentingan untuk ekosistem yang inklusif dan berkelanjutan.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                <!-- Pemerintah & OJK -->
+                <div class="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm hover:bg-white/10 transition text-center">
+                    <div class="w-16 h-16 mx-auto bg-tosca/20 rounded-full flex items-center justify-center mb-4 text-tosca">
+                        <i class="fas fa-landmark text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Pemerintah & OJK</h3>
+                    <p class="text-gray-400 text-sm">Regulasi legalitas (POJK No.40/2024) dan fasilitasi akses permodalan UMKM.</p>
+                </div>
+
+                <!-- Akademisi & Riset -->
+                <div class="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm hover:bg-white/10 transition text-center">
+                    <div class="w-16 h-16 mx-auto bg-cyan/20 rounded-full flex items-center justify-center mb-4 text-cyan">
+                        <i class="fas fa-flask text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Akademisi & Riset</h3>
+                    <p class="text-gray-400 text-sm">Pengembangan AI, validasi Trust Level, dan riset perilaku keuangan.</p>
+                </div>
+
+                <!-- Pelaku UMKM -->
+                <div class="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm hover:bg-white/10 transition text-center">
+                    <div class="w-16 h-16 mx-auto bg-yellow-500/20 rounded-full flex items-center justify-center mb-4 text-yellow-400">
+                        <i class="fas fa-store-alt text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Pelaku UMKM</h3>
+                    <p class="text-gray-400 text-sm">Produsen data keuangan utama yang membangun reputasi digital terverifikasi.</p>
+                </div>
+
+                <!-- Investor Muda -->
+                <div class="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm hover:bg-white/10 transition text-center">
+                    <div class="w-16 h-16 mx-auto bg-green-500/20 rounded-full flex items-center justify-center mb-4 text-green-400">
+                        <i class="fas fa-coins text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Investor Muda</h3>
+                    <p class="text-gray-400 text-sm">Penyedia modal dan penerima manfaat melalui Revenue Sharing organik.</p>
+                </div>
+
+                <!-- Kreator Konten -->
+                <div class="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm hover:bg-white/10 transition text-center">
+                    <div class="w-16 h-16 mx-auto bg-purple-500/20 rounded-full flex items-center justify-center mb-4 text-purple-400">
+                        <i class="fas fa-video text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Kreator Konten</h3>
+                    <p class="text-gray-400 text-sm">Ambassador promosi UMKM potensial kepada komunitas investor muda.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-r from-tosca to-cyan relative overflow-hidden">
+        <div class="absolute inset-0 bg-grid opacity-10"></div>
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <h2 class="text-3xl md:text-5xl font-extrabold mb-6 text-white">Siap Memulai Transformasi?</h2>
+            <p class="text-white/90 text-lg mb-10 max-w-2xl mx-auto">Bergabunglah sebagai pelaku UMKM yang bankable atau investor muda yang cerdas. Mulai perjalanan #DariDataJadiDana bersama CREATIX sekarang.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="openModal('register')" class="px-8 py-4 bg-white text-tosca font-bold rounded-xl shadow-lg hover:bg-gray-100 transition flex items-center justify-center gap-2">
+                    <i class="fas fa-rocket"></i> Daftar UMKM
+                </button>
+                <button onclick="openModal('register')" class="px-8 py-4 bg-gray-900 text-white font-bold rounded-xl shadow-lg hover:bg-gray-800 transition flex items-center justify-center gap-2">
+                    <i class="fas fa-wallet"></i> Daftar Investor
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 border-t border-gray-200 py-12">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-8">
+            <div>
+                <div class="flex items-center gap-2 mb-4">
+                    <img src="https://z-cdn-media.chatglm.cn/files/c95ce19e-845f-4154-8147-c9c00bfb5f5a.png?auth_key=1878512587-50c616d37c114f95baa9751c8318d190-0-9f50f1b6877ddded8300f492d8386ef3" alt="CREATIX Logo" class="h-8 w-8 object-contain">
+                    <span class="text-xl font-extrabold gradient-text">CREATIX</span>
+                </div>
+                <p class="text-gray-500 text-sm">Pionir inklusi keuangan digital di Asia Tenggara yang mengubah data menjadi dana.</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-gray-800 mb-4">Platform</h4>
+                <ul class="space-y-2 text-gray-500 text-sm">
+                    <li><a href="#fitur" class="hover:text-tosca transition">Fitur AI</a></li>
+                    <li><a href="#peran" class="hover:text-tosca transition">Untuk UMKM</a></li>
+                    <li><a href="#peran" class="hover:text-tosca transition">Untuk Investor</a></li>
+                    <li><a href="#" class="hover:text-tosca transition">Keamanan</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-gray-800 mb-4">Perusahaan</h4>
+                <ul class="space-y-2 text-gray-500 text-sm">
+                    <li><a href="#pentahelix" class="hover:text-tosca transition">Kolaborasi</a></li>
+                    <li><a href="#" class="hover:text-tosca transition">Tentang Kami</a></li>
+                    <li><a href="#" class="hover:text-tosca transition">Karir</a></li>
+                    <li><a href="#" class="hover:text-tosca transition">Kontak</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-gray-800 mb-4">Legal</h4>
+                <ul class="space-y-2 text-gray-500 text-sm">
+                    <li><a href="#" class="hover:text-tosca transition">Kebijakan Privasi</a></li>
+                    <li><a href="#" class="hover:text-tosca transition">Syarat & Ketentuan</a></li>
+                    <li><a href="#" class="hover:text-tosca transition">Regulasi OJK</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 mt-10 pt-6 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+            <p>&copy; 2026 CREATIX. Seluruh hak cipta dilindungi undang-undang.</p>
+            <div class="flex gap-4 mt-4 md:mt-0">
+                <a href="#" class="hover:text-tosca transition"><i class="fab fa-instagram text-xl"></i></a>
+                <a href="#" class="hover:text-tosca transition"><i class="fab fa-linkedin text-xl"></i></a>
+                <a href="#" class="hover:text-tosca transition"><i class="fab fa-twitter text-xl"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Modals and Menus -->
+    <script>
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Auth Modal Controls
+        function openModal(type) {
+            const modal = document.getElementById('authModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            switchTab(type);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('authModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function switchTab(type) {
+            const formLogin = document.getElementById('formLogin');
+            const formRegister = document.getElementById('formRegister');
+            const tabLogin = document.getElementById('tabLogin');
+            const tabRegister = document.getElementById('tabRegister');
+
+            if (type === 'login') {
+                formLogin.classList.remove('hidden');
+                formRegister.classList.add('hidden');
+                tabLogin.classList.add('border-tosca', 'text-tosca');
+                tabLogin.classList.remove('border-transparent', 'text-gray-400');
+                tabRegister.classList.remove('border-tosca', 'text-tosca');
+                tabRegister.classList.add('border-transparent', 'text-gray-400');
+            } else {
+                formLogin.classList.add('hidden');
+                formRegister.classList.remove('hidden');
+                tabRegister.classList.add('border-tosca', 'text-tosca');
+                tabRegister.classList.remove('border-transparent', 'text-gray-400');
+                tabLogin.classList.remove('border-tosca', 'text-tosca');
+                tabLogin.classList.add('border-transparent', 'text-gray-400');
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('authModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
